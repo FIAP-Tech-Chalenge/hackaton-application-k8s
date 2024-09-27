@@ -1,23 +1,28 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-hacka-pvc-new
+  name: mariadb-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
+  storageClassName: standard
+
 ---
+
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-hacka-pv
+  name: mariadb-pv
 spec:
+  claimRef:
+    name: mariadb-pvc
   capacity:
-    storage: 1Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: hostpath
+  storageClassName: standard
   hostPath:
-    path: "/mnt/data/mysql-hacka"
+    path: "/mnt/data"

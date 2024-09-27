@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: nginx
+        tier: backend
+    spec:
+      initContainers:
+        - name: init-permissions
+          image: busybox
+          command: [ 'sh', '-c', 'chmod -R 777 /code/storage && chown -R www-data:www-data /code/storage' ]
+          volumeMounts:
+            - name: code
+              mountPath: /code
+      volumes:
+        - name: code
+          persistentVolumeClaim:
+            claimName: code
+        - name: config
+          configMap:
+            name: nginx-config
+            items:
+              - key: config
+                path: site.conf
+      containers:
+        - name: nginx
+          image: rigonlucas/basic-nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: code
+              mountPath: /code
+            - name: config
+              mountPath: /etc/nginx/conf.d

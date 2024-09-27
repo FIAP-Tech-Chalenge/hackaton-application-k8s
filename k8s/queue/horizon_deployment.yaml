@@ -1,0 +1,284 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: horizon
+  labels:
+    app: horizon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: horizon
+  template:
+    metadata:
+      labels:
+        app: horizon
+    spec:
+      containers:
+        - name: horizon
+          image: rigonlucas/hackaton-fpm:1.0.4-RC
+          imagePullPolicy: Always
+          command: [ "php", "artisan", "horizon" ]
+          env:
+            - name: APP_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_URL
+            - name: DB_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_CONNECTION
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_PORT
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: DB_DATABASE
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DB_PASSWORD
+            - name: QUEUE_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: QUEUE_CONNECTION
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: REDIS_PORT
+            - name: APP_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_ENV
+            - name: APP_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_DEBUG
+            - name: APP_TIMEZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_TIMEZONE
+            - name: APP_LOCALE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_LOCALE
+            - name: APP_FALLBACK_LOCALE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_FALLBACK_LOCALE
+            - name: APP_FAKER_LOCALE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_FAKER_LOCALE
+            - name: APP_MAINTENANCE_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_MAINTENANCE_DRIVER
+            - name: APP_MAINTENANCE_STORE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: APP_MAINTENANCE_STORE
+            - name: BCRYPT_ROUNDS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: BCRYPT_ROUNDS
+            - name: LOG_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: LOG_CHANNEL
+            - name: LOG_STACK
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: LOG_STACK
+            - name: LOG_DEPRECATIONS_CHANNEL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: LOG_DEPRECATIONS_CHANNEL
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: LOG_LEVEL
+            - name: SESSION_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SESSION_DRIVER
+            - name: SESSION_LIFETIME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SESSION_LIFETIME
+            - name: SESSION_ENCRYPT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SESSION_ENCRYPT
+            - name: SESSION_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SESSION_PATH
+            - name: SESSION_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SESSION_DOMAIN
+            - name: BROADCAST_CONNECTION
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: BROADCAST_CONNECTION
+            - name: CACHE_STORE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: CACHE_STORE
+            - name: CACHE_PREFIX
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: CACHE_PREFIX
+            - name: MEMCACHED_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MEMCACHED_HOST
+            - name: REDIS_CLIENT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: REDIS_CLIENT
+            - name: MAIL_MAILER
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_MAILER
+            - name: MAIL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_HOST
+            - name: MAIL_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_PORT
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MAIL_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: MAIL_PASSWORD
+            - name: MAIL_ENCRYPTION
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_ENCRYPTION
+            - name: MAIL_FROM_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_FROM_ADDRESS
+            - name: MAIL_FROM_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: MAIL_FROM_NAME
+            - name: FILESYSTEM_DISK
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: FILESYSTEM_DISK
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AWS_DEFAULT_REGION
+            - name: AWS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AWS_BUCKET
+            - name: AWS_USE_PATH_STYLE_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AWS_USE_PATH_STYLE_ENDPOINT
+            - name: AWS_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: AWS_ENDPOINT
+            - name: VITE_APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: VITE_APP_NAME
+            - name: SWAGGER_UI_VALIDATOR_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: SWAGGER_UI_VALIDATOR_URL
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: APP_KEY
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: code
+              mountPath: /code
+      volumes:
+        - name: code
+          persistentVolumeClaim:
+            claimName: code
